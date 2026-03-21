@@ -1,0 +1,45 @@
+[{
+  "_id": {
+    "$oid": "68076215caffdcc50adb9157"
+  },
+  "login": "user",
+  "password": "$2b$10$s4f2jmbGyANtmcWi1twoUebTNUppMWIvcO2S4R9jXbjGNg9H1yZXm",
+  "role": 2,
+  "createdAt": {
+    "$date": "2025-04-22T09:32:05.083Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-22T09:32:05.083Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "680763fe9ff5298905e92f60"
+  },
+  "login": "admin",
+  "password": "$2b$10$s4f2jmbGyANtmcWi1twoUebTNUppMWIvcO2S4R9jXbjGNg9H1yZXm",
+  "role": 0,
+  "createdAt": {
+    "$date": "2025-04-22T09:32:05.083Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-22T09:32:05.083Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "680764209ff5298905e92f61"
+  },
+  "login": "moderator",
+  "password": "$2b$10$s4f2jmbGyANtmcWi1twoUebTNUppMWIvcO2S4R9jXbjGNg9H1yZXm",
+  "role": 1,
+  "createdAt": {
+    "$date": "2025-04-22T09:32:05.083Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-22T09:32:05.083Z"
+  },
+  "__v": 0
+}]
