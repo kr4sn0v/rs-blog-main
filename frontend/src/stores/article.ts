@@ -1,15 +1,23 @@
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import { ref } from 'vue'
+import type { ApiResnose, Article } from '@/types'
 
 export const useArticleStore = defineStore('article', () => {
-  const article = ref({})
+  const article = ref<Article>({
+    id: '',
+    title: '',
+    content: '',
+    imageUrl: '',
+    publishedAt: new Date(),
+    comments: [],
+  })
   const isInEditMode = ref(false)
 
   const toggleEditMode = () => {
     isInEditMode.value = !isInEditMode.value
   }
 
-  const fetchArticle = async (id) => {
+  const fetchArticle = async (id: string): Promise<ApiResnose<Article> | undefined> => {
     try {
       const response = await fetch(`/api/posts/${id}`)
 
@@ -22,10 +30,11 @@ export const useArticleStore = defineStore('article', () => {
       return data
     } catch (error) {
       console.error('Ошибка получения статьи', error)
+      return undefined
     }
   }
 
-  const updateArticle = async ({ title, content, imageUrl }) => {
+  const updateArticle = async ({ title, content, imageUrl }: Article) => {
     try {
       const response = await fetch(`/api/posts/${article.value.id}`, {
         method: 'PATCH',
@@ -55,7 +64,7 @@ export const useArticleStore = defineStore('article', () => {
     }
   }
 
-  const deleteArticle = async () => {
+  const deleteArticle = async (): Promise<ApiResnose<string> | undefined> => {
     try {
       const response = await fetch(`/api/posts/${article.value.id}`, {
         method: 'DELETE',
@@ -72,7 +81,7 @@ export const useArticleStore = defineStore('article', () => {
     }
   }
 
-  const addArticle = async (newArticle) => {
+  const addArticle = async (newArticle: Article): Promise<ApiResnose<Article> | undefined> => {
     try {
       const response = await fetch('/api/posts', {
         method: 'POST',
@@ -93,7 +102,7 @@ export const useArticleStore = defineStore('article', () => {
     }
   }
 
-  const addComment = async (newComment) => {
+  const addComment = async (newComment: string): Promise<ApiResnose<Comment> | undefined> => {
     try {
       const response = await fetch(`/api/posts/${article.value.id}/comments`, {
         method: 'POST',
@@ -119,7 +128,7 @@ export const useArticleStore = defineStore('article', () => {
     }
   }
 
-  const deleteComment = async (commentId) => {
+  const deleteComment = async (commentId: string): Promise<ApiResnose<string> | undefined> => {
     try {
       const response = await fetch(`/api/posts/${article.value.id}/comments/${commentId}`, {
         method: 'DELETE',

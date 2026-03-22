@@ -1,10 +1,11 @@
+import { ApiResnose, User } from '@/types'
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import { ref } from 'vue'
 
 export const useUsersStore = defineStore('users', () => {
-  const users = ref([])
+  const users = ref<User[]>([])
 
-  const fetchUsers = async () => {
+  const fetchUsers = async (): Promise<ApiResnose<User[]> | undefined> => {
     try {
       const response = await fetch('/api/users')
 
@@ -18,7 +19,7 @@ export const useUsersStore = defineStore('users', () => {
     }
   }
 
-  const deleteUser = async (userId) => {
+  const deleteUser = async (userId: string): Promise<ApiResnose<string> | undefined> => {
     try {
       const response = await fetch(`/api/users/${userId}`, {
         method: 'DELETE',
@@ -34,7 +35,10 @@ export const useUsersStore = defineStore('users', () => {
     }
   }
 
-  const changeUserRole = async (userId, userRole) => {
+  const changeUserRole = async (
+    userId: string,
+    userRole: number,
+  ): Promise<ApiResnose<User> | undefined> => {
     try {
       const response = await fetch(`/api/users/${userId}`, {
         method: 'PATCH',

@@ -1,28 +1,28 @@
-<script setup>
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { ref, watch } from 'vue';
+<script setup lang="ts">
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+import { ref, watch } from 'vue'
 
-import ButtonBase from './ButtonBase.vue';
+import ButtonBase from './ButtonBase.vue'
 
-const searchQuery = ref('');
+const searchQuery = ref('')
 
 const props = defineProps({
   onSearch: {
     type: Function,
-    required: true
-  }
+    required: true,
+  },
 })
 
-let deboucedTimer;
+let deboucedTimer: ReturnType<typeof setTimeout> | undefined
 
 const handlerSearch = () => {
-  clearTimeout(deboucedTimer);
+  clearTimeout(deboucedTimer)
   props.onSearch({ search: searchQuery.value })
 }
 
-const debouncedSearch = (query) => {
-  clearTimeout(deboucedTimer);
+const debouncedSearch = (query: string) => {
+  clearTimeout(deboucedTimer)
 
   deboucedTimer = setTimeout(() => {
     props.onSearch({ search: query })
@@ -35,10 +35,15 @@ watch(searchQuery, (newQuery) => {
 </script>
 
 <template>
-  <form @submit.prevent="handlerSearch" class="mt-12 relative">
-    <input type="text" class="pr-20 bg-white border border-gray-300 w-full rounded-md p-2" name="search"
-      placeholder="Поиск по блогу" v-model="searchQuery">
-    <ButtonBase type="submit" class="absolute right-0 top-0">
+  <form @submit.prevent="handlerSearch" class="relative mt-12">
+    <input
+      type="text"
+      class="w-full rounded-md border border-gray-300 bg-white p-2 pr-20"
+      name="search"
+      placeholder="Поиск по блогу"
+      v-model="searchQuery"
+    />
+    <ButtonBase type="submit" class="absolute top-0 right-0">
       <FontAwesomeIcon :icon="faMagnifyingGlass" />
     </ButtonBase>
   </form>

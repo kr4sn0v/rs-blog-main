@@ -1,17 +1,25 @@
-<script setup>
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faCalendar, faComment } from '@fortawesome/free-solid-svg-icons';
-import { useArticlesStore } from '@/stores/articles';
-import { onBeforeMount } from 'vue';
-import { RouterLink } from 'vue-router';
-import { formatDate } from '@/utils/dateFormaters';
+<script setup lang="ts">
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faCalendar, faComment } from '@fortawesome/free-solid-svg-icons'
+import { useArticlesStore } from '@/stores/articles'
+import { useArticleStore } from '@/stores/article'
+import { onBeforeMount } from 'vue'
+import { RouterLink } from 'vue-router'
+import { formatDate } from '@/utils/dateFormaters'
 
-const articlesStore = useArticlesStore();
+const articlesStore = useArticlesStore()
+const articleStore = useArticleStore()
+
+const props = defineProps({
+  dateOptions: {
+    type: Object,
+    required: false,
+  },
+})
 
 onBeforeMount(() => {
   articlesStore.fetchArticles()
 })
-
 </script>
 
 <template>
@@ -20,19 +28,22 @@ onBeforeMount(() => {
 
     <ul v-if="articlesStore.articles.length" class="grid grid-cols-3 gap-8">
       <li class="flex" v-for="article in articlesStore.articles" :key="article.id">
-        <article class="w-full flex">
-          <RouterLink :to="`/post/${article.id}`"
-            class="w-full flex flex-col  p-4 bg-white rounded-md shadow hover:shadow-2xl">
+        <article class="flex w-full">
+          <RouterLink
+            :to="`/post/${article.id}`"
+            class="flex w-full flex-col rounded-md bg-white p-4 shadow hover:shadow-2xl"
+          >
             <div class="mb-4">
-              <img :src="article.imageUrl" class="w-full h-48 object-cover" alt="">
+              <img :src="article.imageUrl" class="h-48 w-full object-cover" alt="" />
             </div>
-            <h3 class="text-xl mb-2">{{ article.title }}</h3>
-            <div class="mt-auto flex align-centen justify-between">
-              <p>
-                <time :datetime="article.publishedAt">
-                  <FontAwesomeIcon :icon="faCalendar" />
-                  {{ formatDate(article.publishedAt) }}
-                </time>
+            <h3 class="mb-2 text-xl">{{ article.title }}</h3>
+            <div class="align-centen mt-auto flex justify-between">
+              <p class="mb-4 text-gray-600">
+                <FontAwesomeIcon :icon="faCalendar" />
+
+                <time :datetime="formatDate(articleStore.article.publishedAt, props.dateOptions)">{{
+                  formatDate(articleStore.article.publishedAt, props.dateOptions)
+                }}</time>
               </p>
               <p>
                 <FontAwesomeIcon :icon="faComment" />

@@ -1,14 +1,14 @@
-<script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faTrash, faFloppyDisk, faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons';
-import { useArticleStore } from '@/stores/article';
-import { useModalStore } from '@/stores/modal';
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faTrash, faFloppyDisk, faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons'
+import { useArticleStore } from '@/stores/article'
+import { useModalStore } from '@/stores/modal'
 
-const router = useRouter();
+const router = useRouter()
 const modalStore = useModalStore()
-const articleStore = useArticleStore();
+const articleStore = useArticleStore()
 const editedArticle = ref({ ...articleStore.article })
 
 const handleArticleUpdate = async () => {
@@ -24,7 +24,7 @@ const handleArticleUpdate = async () => {
 
 const handleDeleteArticle = () => {
   modalStore.open('Удалить статью?', async () => {
-    const response = await articleStore.deleteArticle();
+    const response = await articleStore.deleteArticle()
     if (!response.error) {
       router.push('/')
     }
@@ -33,37 +33,61 @@ const handleDeleteArticle = () => {
 </script>
 
 <template>
-  <form class="bg-white rounded-md shadow-md p-8 mb-8" @submit.prevent="handleArticleUpdate">
-    <div class="flex justify-between items-center mb-4">
+  <form class="mb-8 rounded-md bg-white p-8 shadow-md" @submit.prevent="handleArticleUpdate">
+    <div class="mb-4 flex items-center justify-between">
       <h1 class="text-3xl">Редактировать статью</h1>
       <div class="flex gap-4 text-xl">
-        <button type="button" @click="articleStore.toggleEditMode" class="cursor-pointer hover:text-blue-500"
-          aria-label="Отменить изменения">
+        <button
+          type="button"
+          @click="articleStore.toggleEditMode"
+          class="cursor-pointer hover:text-blue-500"
+          aria-label="Отменить изменения"
+        >
           <FontAwesomeIcon :icon="faArrowRotateLeft" />
         </button>
-        <button type="submit" class="cursor-pointer hover:text-blue-500" aria-label="Сохранить статью">
+        <button
+          type="submit"
+          class="cursor-pointer hover:text-blue-500"
+          aria-label="Сохранить статью"
+        >
           <FontAwesomeIcon :icon="faFloppyDisk" />
         </button>
-        <button type="button" class="cursor-pointer hover:text-red-500" aria-label="Удалить статью"
-          @click="handleDeleteArticle">
+        <button
+          type="button"
+          class="cursor-pointer hover:text-red-500"
+          aria-label="Удалить статью"
+          @click="handleDeleteArticle"
+        >
           <FontAwesomeIcon :icon="faTrash" />
         </button>
       </div>
     </div>
 
     <p class="mb-4">
-      <input class="w-full border border-gray-300 rounded-md p-2" type="text" v-model="editedArticle.imageUrl"
-        placeholder="URL изображения">
+      <input
+        class="w-full rounded-md border border-gray-300 p-2"
+        type="text"
+        v-model="editedArticle.imageUrl"
+        placeholder="URL изображения"
+      />
     </p>
 
     <p class="mb-4">
-      <input class="w-full border border-gray-300 rounded-md p-2" type="text" v-model="editedArticle.title"
-        placeholder="Заголовок статьи">
+      <input
+        class="w-full rounded-md border border-gray-300 p-2"
+        type="text"
+        v-model="editedArticle.title"
+        placeholder="Заголовок статьи"
+      />
     </p>
 
     <p class="mb-4">
-      <textarea class="w-full border border-gray-300 rounded-md p-2" rows="15" v-model="editedArticle.content"
-        placeholder="Содержание статьи"></textarea>
+      <textarea
+        class="w-full rounded-md border border-gray-300 p-2"
+        rows="15"
+        v-model="editedArticle.content"
+        placeholder="Содержание статьи"
+      ></textarea>
     </p>
   </form>
 </template>

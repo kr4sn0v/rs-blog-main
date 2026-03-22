@@ -1,10 +1,11 @@
+import { ApiResnose, Role } from '@/types'
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import { ref } from 'vue'
 
 export const useRolesStore = defineStore('roles', () => {
-  const roles = ref([])
+  const roles = ref<Role[]>([])
 
-  const fetchRoles = async () => {
+  const fetchRoles = async (): Promise<ApiResnose<Role[]> | undefined> => {
     try {
       const response = await fetch('/api/users/roles')
 

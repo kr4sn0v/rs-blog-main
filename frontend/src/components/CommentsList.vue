@@ -1,16 +1,16 @@
-<script setup>
-import { ref } from 'vue';
+<script setup lang="ts">
+import { ref } from 'vue'
 
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faTrash, faUser } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faTrash, faUser } from '@fortawesome/free-solid-svg-icons'
 
-import { useArticleStore } from '@/stores/article';
-import { useUserStore } from '@/stores/user';
-import { useModalStore } from '@/stores/modal';
+import { useArticleStore } from '@/stores/article'
+import { useUserStore } from '@/stores/user'
+import { useModalStore } from '@/stores/modal'
 
-import { formatDate } from '@/utils/dateFormaters';
+import { formatDate } from '@/utils/dateFormaters'
 
-import MessageBoxBase from './base/MessageBoxBase.vue';
+import MessageBoxBase from './base/MessageBoxBase.vue'
 
 const articleStore = useArticleStore()
 const userStore = useUserStore()
@@ -21,12 +21,12 @@ const errorMessage = ref('')
 const props = defineProps({
   dateOptions: {
     type: Object,
-    required: false
-  }
+    required: false,
+  },
 })
 
-const handleDeleteComment = (commentId) => {
-  errorMessage.value = '';
+const handleDeleteComment = (commentId: string) => {
+  errorMessage.value = ''
 
   modalStore.open('Удалить комментарий?', async () => {
     const response = await articleStore.deleteComment(commentId)
@@ -39,25 +39,33 @@ const handleDeleteComment = (commentId) => {
 
 <template>
   <ul>
-    <li v-for="comment in articleStore.article.comments" :key="comment.id"
-      class="bg-white rounded-md shadow-md p-4 mb-4">
-      <div class="flex justify-between mb-2">
+    <li
+      v-for="comment in articleStore.article.comments"
+      :key="comment.id"
+      class="mb-4 rounded-md bg-white p-4 shadow-md"
+    >
+      <div class="mb-2 flex justify-between">
         <p class="font-bold">
           <FontAwesomeIcon :icon="faUser" />
           &nbsp;
           {{ comment.author }}
         </p>
-        <button v-if="userStore.isAdmin || userStore.isModerator" type="button"
-          class="text-red-500 cursor-pointer hover:text-red-700" @click="handleDeleteComment(comment.id)">
+        <button
+          v-if="userStore.isAdmin || userStore.isModerator"
+          type="button"
+          class="cursor-pointer text-red-500 hover:text-red-700"
+          @click="handleDeleteComment(comment.id)"
+        >
           <FontAwesomeIcon :icon="faTrash" />
-          &nbsp;
-          Удалить
+          &nbsp; Удалить
         </button>
       </div>
-      <p class="text-gray-500 text-sm mb-2">
-        <time :datetime="comment.publishedAt"> {{ formatDate(comment.publishedAt, props.dateOptions) }}</time>
+      <p class="mb-2 text-sm text-gray-500">
+        <time :datetime="formatDate(comment.publishedAt, props.dateOptions)">
+          {{ formatDate(comment.publishedAt, props.dateOptions) }}</time
+        >
       </p>
-      <div class="whitespace-pre-wrap mb-2">
+      <div class="mb-2 whitespace-pre-wrap">
         {{ comment.content }}
       </div>
     </li>
